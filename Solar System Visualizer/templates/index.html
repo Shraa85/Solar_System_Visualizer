@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solar System Visualizer - Explore the Cosmos</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-globe"></i> Solar System Visualizer
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item"><a href="#home" class="nav-link">Home</a></li>
+                <li class="nav-item"><a href="#features" class="nav-link">Features</a></li>
+                <li class="nav-item"><a href="#about" class="nav-link">About</a></li>
+                <li class="nav-item"><a href="#contact" class="nav-link">Contact</a></li>
+            </ul>
+            <div class="nav-auth">
+                <button class="btn-login" onclick="redirectToLogin()">Login</button>
+                <button class="btn-register" onclick="redirectToRegister()">Register</button>
+            </div>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="stars"></div>
+        <div class="hero-content">
+            <h1 class="hero-title">Explore the Cosmos</h1>
+            <p class="hero-subtitle">Experience an Interactive 3D Solar System Visualization</p>
+            <div class="hero-buttons">
+                <button class="btn btn-primary" onclick="redirectToStartExplore()">
+                    <i class="fas fa-rocket"></i> Start Exploration
+                </button>
+                <button class="btn btn-secondary" onclick="showDemo()">
+                    <i class="fas fa-play"></i> View Demo
+                </button>
+            </div>
+        </div>
+        <div class="solar-system-preview">
+            <div class="sun"></div>
+            <div class="planet planet-1"></div>
+            <div class="planet planet-2"></div>
+            <div class="planet planet-3"></div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features">
+        <div class="features-container">
+            <h2 class="section-title">Why Choose Solar System Visualizer?</h2>
+            <div class="features-grid">
+                <!-- Feature 1 -->
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-cube"></i>
+                    </div>
+                    <h3>Interactive 3D Planets</h3>
+                    <p>Explore all eight planets in stunning 3D detail. Rotate, zoom, and interact with each celestial body.</p>
+                </div>
+
+                <!-- Feature 2 -->
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-bar"></i>
+                    </div>
+                    <h3>Detailed Information</h3>
+                    <p>Access comprehensive data about distance from sun, size, orbital speed, temperature, and more.</p>
+                </div>
+
+                <!-- Feature 3 -->
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-moon"></i>
+                    </div>
+                    <h3>Moons & Asteroids</h3>
+                    <p>Discover moons orbiting each planet and explore asteroid belts with real astronomical data.</p>
+                </div>
+
+                <!-- Feature 4 -->
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    <h3>Educational Content</h3>
+                    <p>Learn fascinating facts about our solar system with curated educational materials and resources.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quizzes Section (Premium Feature) -->
+    <section class="quizzes-preview">
+        <div class="quizzes-container">
+            <h2 class="section-title">Test Your Knowledge with Quizzes</h2>
+            <p class="section-subtitle">Challenge yourself and learn more about our solar system</p>
+            
+            <div class="quizzes-grid">
+                <!-- Quiz 1 -->
+                <div class="quiz-preview-card">
+                    <div class="quiz-difficulty easy">Easy</div>
+                    <i class="fas fa-book-open quiz-icon"></i>
+                    <h3>Mercury & Venus</h3>
+                    <p>Test your knowledge about the first two planets</p>
+                    <div class="quiz-meta">
+                        <span><i class="fas fa-questions-circle"></i> 10 Questions</span>
+                        <span><i class="fas fa-clock"></i> 5 min</span>
+                    </div>
+                </div>
+
+                <!-- Quiz 2 -->
+                <div class="quiz-preview-card">
+                    <div class="quiz-difficulty easy">Easy</div>
+                    <i class="fas fa-book-open quiz-icon"></i>
+                    <h3>Earth & Mars</h3>
+                    <p>Explore the terrestrial planets in depth</p>
+                    <div class="quiz-meta">
+                        <span><i class="fas fa-questions-circle"></i> 12 Questions</span>
+                        <span><i class="fas fa-clock"></i> 6 min</span>
+                    </div>
+                </div>
+
+                <!-- Quiz 3 -->
+                <div class="quiz-preview-card">
+                    <div class="quiz-difficulty medium">Medium</div>
+                    <i class="fas fa-book-open quiz-icon"></i>
+                    <h3>Gas Giants</h3>
+                    <p>Challenge yourself with Jupiter & Saturn</p>
+                    <div class="quiz-meta">
+                        <span><i class="fas fa-questions-circle"></i> 15 Questions</span>
+                        <span><i class="fas fa-clock"></i> 10 min</span>
+                    </div>
+                </div>
+
+                <!-- Quiz 4 -->
+                <div class="quiz-preview-card">
+                    <div class="quiz-difficulty hard">Hard</div>
+                    <i class="fas fa-book-open quiz-icon"></i>
+                    <h3>Mastery Challenge</h3>
+                    <p>Expert level - test everything you've learned</p>
+                    <div class="quiz-meta">
+                        <span><i class="fas fa-questions-circle"></i> 25 Questions</span>
+                        <span><i class="fas fa-clock"></i> 20 min</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="quiz-cta">
+                <p><i class="fas fa-lock"></i> <strong>Premium Feature:</strong> Register to unlock quizzes, track scores, and compete with others</p>
+                <button class="btn btn-primary" onclick="redirectToRegister()">
+                    <i class="fas fa-user-plus"></i> Register to Start Quizzes
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="cta-content">
+            <h2>Unlock Full Features</h2>
+            <p>Create your account to access quizzes, track your progress, and join a community of space enthusiasts.</p>
+            <button class="btn btn-primary" onclick="redirectToRegister()">
+                <i class="fas fa-user-plus"></i> Create Account
+            </button>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about">
+        <div class="about-container">
+            <h2 class="section-title">About Solar System Visualizer</h2>
+            <div class="about-content">
+                <p>
+                    Solar System Visualizer is an educational platform designed to bring the wonders of our solar system 
+                    to life. Using advanced 3D visualization technology and real astronomical data, we provide an immersive 
+                    experience for learners of all ages.
+                </p>
+                <p>
+                    Whether you're a student studying astronomy, an educator looking for teaching tools, or simply curious 
+                    about space, our interactive visualizer makes learning about planets, moons, and celestial mechanics 
+                    engaging and fun.
+                </p>
+                <div class="about-stats">
+                    <div class="stat">
+                        <h3>8</h3>
+                        <p>Planets</p>
+                    </div>
+                    <div class="stat">
+                        <h3>246</h3>
+                        <p>Moons</p>
+                    </div>
+                    <div class="stat">
+                        <h3>3D</h3>
+                        <p>Technology</p>
+                    </div>
+                    <div class="stat">
+                        <h3>100%</h3>
+                        <p>Free</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <div class="contact-container">
+            <h2 class="section-title">Get In Touch</h2>
+            <div class="contact-content">
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <div>
+                            <h4>Email</h4>
+                            <p>shravanipatil2526@ternaengg.ac.in
+                                samikshabodake2526@ternaengg.ac.in
+                                divyahanda2526@ternaengg.ac.in
+                                shreyanalavade2526@ternaengg.ac.in
+                            </p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-phone"></i>
+                        <div>
+                            <h4>Phone</h4>
+                            <p>+91 7387182302</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div>
+                            <h4>Location</h4>
+                            <p>Maharashtra, India</p>
+                        </div>
+                    </div>
+                </div>
+                <form class="contact-form" onsubmit="handleContactForm(event)">
+                    <input type="text" placeholder="Your Name" required>
+                    <input type="email" placeholder="Your Email" required>
+                    <textarea placeholder="Your Message" rows="5" required></textarea>
+                    <button type="submit" class="btn btn-primary">Send Message</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>Solar System Visualizer</h4>
+                    <p>Exploring the cosmos, one planet at a time.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Follow Us</h4>
+                    <div class="social-links">
+                        <a href="https://www.linkedin.com/in/shravani-patil-56285a318" 
+                        title="LinkedIn" 
+                        target="_blank" 
+                        rel="noopener noreferrer">
+                            <i class="fab fa-linkedin"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Solar System Visualizer. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Demo Modal (Not needed - scrolls to quizzes directly) -->
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

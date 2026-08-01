@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Solar System Visualizer</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-globe"></i> Solar System Visualizer
+            </div>
+            <div class="nav-user">
+                <span class="user-name" id="userName">User</span>
+                <div class="user-menu">
+                    <button class="user-btn">
+                        <i class="fas fa-user-circle"></i>
+                    </button>
+                    <div class="dropdown-menu">
+                        <a href="#profile" onclick="viewProfile()"><i class="fas fa-user"></i> Profile</a>
+                        <a href="#settings"><i class="fas fa-cog"></i> Settings</a>
+                        <a href="/logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-menu">
+                <a href="#overview" class="menu-item active" data-section="overview">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Overview</span>
+                </a>
+                <a href="#visualizer" class="menu-item" data-section="visualizer">
+                    <i class="fas fa-cube"></i>
+                    <span>Visualizer</span>
+                </a>
+                <a href="#quizzes" class="menu-item" data-section="quizzes">
+                    <i class="fas fa-graduation-cap"></i>
+                    <span>Quizzes</span>
+                </a>
+                <a href="#profile" class="menu-item" data-section="profile">
+                    <i class="fas fa-user"></i>
+                    <span>Profile</span>
+                </a>
+                <a href="#about" class="menu-item" data-section="about">
+                    <i class="fas fa-info-circle"></i>
+                    <span>About</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Overview Section -->
+            <section id="overview" class="content-section active">
+                <div class="section-header">
+                    <h1>Welcome, <span id="greetName">User</span>!</h1>
+                    <p>Ready to explore the solar system?</p>
+                </div>
+
+                <div class="quick-stats" id="quickStats">
+                    <div class="stat-card">
+                        <i class="fas fa-star"></i>
+                        <h3>Quizzes Completed</h3>
+                        <p class="stat-value" id="quizzesCompleted">0</p>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-trophy"></i>
+                        <h3>Average Score</h3>
+                        <p class="stat-value" id="averageScore">0%</p>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-bookmark"></i>
+                        <h3>Total Points</h3>
+                        <p class="stat-value" id="totalPoints">0</p>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-chart-line"></i>
+                        <h3>Current Streak</h3>
+                        <p class="stat-value" id="currentStreak">0</p>
+                    </div>
+                </div>
+
+                <div class="cta-section">
+                    <h2>Start Your Cosmic Journey</h2>
+                    <p>Launch the interactive 3D solar system visualizer and explore the wonders of our cosmos.</p>
+                    <button class="btn-primary" onclick="launchVisualizer()">
+                        <i class="fas fa-rocket"></i> Launch Visualizer
+                    </button>
+                </div>
+
+                <div class="features-preview">
+                    <h2>What You Can Do</h2>
+                    <div class="features-grid">
+                        <div class="feature-item">
+                            <i class="fas fa-cube"></i>
+                            <h3>3D Models</h3>
+                            <p>Explore detailed 3D models of all planets</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-info-circle"></i>
+                            <h3>Information</h3>
+                            <p>Learn detailed facts about celestial bodies</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-play"></i>
+                            <h3>Simulation</h3>
+                            <p>Run real-time orbital simulations</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-save"></i>
+                            <h3>Save Progress</h3>
+                            <p>Save and manage your simulations</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Visualizer Section -->
+            <section id="visualizer" class="content-section">
+                <div class="section-header">
+                    <h1>Solar System Visualizer</h1>
+                    <p>Interactive 3D exploration of our solar system</p>
+                </div>
+
+                <div class="visualizer-container">
+                    <div class="visualizer-placeholder">
+                        <i class="fas fa-cube"></i>
+                        <p>3D Visualization will load here</p>
+                        <button class="btn-primary" onclick="launchVisualizer()">
+                            Launch Full Experience
+                        </button>
+                    </div>
+                </div>
+
+                <div class="simulation-controls">
+                    <h2>Simulation Settings</h2>
+                    <div class="controls-grid">
+                        <div class="control-item">
+                            <label>Simulation Speed</label>
+                            <input type="range" min="0.1" max="10" step="0.1" value="1">
+                        </div>
+                        <div class="control-item">
+                            <label>View Mode</label>
+                            <select>
+                                <option>Orbital View</option>
+                                <option>Ecliptic View</option>
+                                <option>3D View</option>
+                            </select>
+                        </div>
+                        <div class="control-item">
+                            <label>Show Orbits</label>
+                            <input type="checkbox" checked>
+                        </div>
+                        <div class="control-item">
+                            <label>Show Labels</label>
+                            <input type="checkbox" checked>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Quizzes Section -->
+            <section id="quizzes" class="content-section">
+                <div class="section-header">
+                    <h1>Quizzes</h1>
+                    <p>Test your knowledge about the solar system</p>
+                </div>
+
+                <div class="tabs-navigation">
+                    <button class="tab-btn active" onclick="switchQuizTab('available')">
+                        Available Quizzes
+                    </button>
+                    <button class="tab-btn" onclick="switchQuizTab('completed')">
+                        Completed Quizzes
+                    </button>
+                </div>
+
+                <!-- Available Quizzes -->
+                <div id="availableQuizzes" class="quiz-container active-tab">
+                    <div class="quiz-card">
+                        <div class="quiz-header">
+                            <h3>Mercury & Venus</h3>
+                            <span class="difficulty easy">Easy</span>
+                        </div>
+                        <p class="quiz-description">Learn about the two inner planets of our solar system.</p>
+                        <div class="quiz-info">
+                            <span><i class="fas fa-question-circle"></i> 15 Questions</span>
+                            <span><i class="fas fa-clock"></i> 30 mins</span>
+                        </div>
+                        <button class="btn-secondary" onclick="startQuiz('mercury-venus')">
+                            Start Quiz
+                        </button>
+                    </div>
+
+                    <div class="quiz-card">
+                        <div class="quiz-header">
+                            <h3>Earth & Mars</h3>
+                            <span class="difficulty easy">Easy</span>
+                        </div>
+                        <p class="quiz-description">Explore the terrestrial planets and their characteristics.</p>
+                        <div class="quiz-info">
+                            <span><i class="fas fa-question-circle"></i> 15 Questions</span>
+                            <span><i class="fas fa-clock"></i> 30 mins</span>
+                        </div>
+                        <button class="btn-secondary" onclick="startQuiz('earth-mars')">
+                            Start Quiz
+                        </button>
+                    </div>
+
+                    <div class="quiz-card">
+                        <div class="quiz-header">
+                            <h3>Gas Giants</h3>
+                            <span class="difficulty medium">Medium</span>
+                        </div>
+                        <p class="quiz-description">Discover Jupiter, Saturn and their fascinating features.</p>
+                        <div class="quiz-info">
+                            <span><i class="fas fa-question-circle"></i> 15 Questions</span>
+                            <span><i class="fas fa-clock"></i> 30 mins</span>
+                        </div>
+                        <button class="btn-secondary" onclick="startQuiz('gas-giants')">
+                            Start Quiz
+                        </button>
+                    </div>
+
+                    <div class="quiz-card">
+                        <div class="quiz-header">
+                            <h3>Ice Giants & Dwarf Planets</h3>
+                            <span class="difficulty hard">Hard</span>
+                        </div>
+                        <p class="quiz-description">Test your knowledge of the outer solar system.</p>
+                        <div class="quiz-info">
+                            <span><i class="fas fa-question-circle"></i> 15 Questions</span>
+                            <span><i class="fas fa-clock"></i> 30 mins</span>
+                        </div>
+                        <button class="btn-secondary" onclick="startQuiz('ice-giants')">
+                            Start Quiz
+                        </button>
+                    </div>
+
+                    <div class="quiz-card">
+                        <div class="quiz-header">
+                            <h3>Solar System Basics</h3>
+                            <span class="difficulty easy">Easy</span>
+                        </div>
+                        <p class="quiz-description">Build a strong foundation with key solar system concepts.</p>
+                        <div class="quiz-info">
+                            <span><i class="fas fa-question-circle"></i> 15 Questions</span>
+                            <span><i class="fas fa-clock"></i> 30 mins</span>
+                        </div>
+                        <button class="btn-secondary" onclick="startQuiz('solar-system-basics')">
+                            Start Quiz
+                        </button>
+                    </div>
+
+                    <div class="quiz-card">
+                        <div class="quiz-header">
+                            <h3>Planet Motions & Orbits</h3>
+                            <span class="difficulty medium">Medium</span>
+                        </div>
+                        <p class="quiz-description">Understand rotation, revolution, tilt, and orbital motion.</p>
+                        <div class="quiz-info">
+                            <span><i class="fas fa-question-circle"></i> 15 Questions</span>
+                            <span><i class="fas fa-clock"></i> 30 mins</span>
+                        </div>
+                        <button class="btn-secondary" onclick="startQuiz('motions-orbits')">
+                            Start Quiz
+                        </button>
+                    </div>
+
+                    <div class="quiz-card">
+                        <div class="quiz-header">
+                            <h3>Missions & Discoveries</h3>
+                            <span class="difficulty medium">Medium</span>
+                        </div>
+                        <p class="quiz-description">Explore how scientists learned about planets through missions and observation.</p>
+                        <div class="quiz-info">
+                            <span><i class="fas fa-question-circle"></i> 15 Questions</span>
+                            <span><i class="fas fa-clock"></i> 30 mins</span>
+                        </div>
+                        <button class="btn-secondary" onclick="startQuiz('missions-discoveries')">
+                            Start Quiz
+                        </button>
+                    </div>
+
+                    <div class="quiz-card">
+                        <div class="quiz-header">
+                            <h3>Solar System Mastery</h3>
+                            <span class="difficulty hard">Hard</span>
+                        </div>
+                        <p class="quiz-description">Comprehensive quiz covering all planets and celestial phenomena.</p>
+                        <div class="quiz-info">
+                            <span><i class="fas fa-question-circle"></i> 15 Questions</span>
+                            <span><i class="fas fa-clock"></i> 30 mins</span>
+                        </div>
+                        <button class="btn-secondary" onclick="startQuiz('mastery')">
+                            Start Quiz
+                        </button>
+                    </div>
+
+                    <div class="quiz-card">
+                        <div class="quiz-header">
+                            <h3>Planet Comparison Challenge</h3>
+                            <span class="difficulty hard">Hard</span>
+                        </div>
+                        <p class="quiz-description">Compare sizes, temperatures, moons, and features across planets.</p>
+                        <div class="quiz-info">
+                            <span><i class="fas fa-question-circle"></i> 15 Questions</span>
+                            <span><i class="fas fa-clock"></i> 30 mins</span>
+                        </div>
+                        <button class="btn-secondary" onclick="startQuiz('planet-comparison')">
+                            Start Quiz
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Completed Quizzes -->
+                <div id="completedQuizzes" class="quiz-container">
+                    <div id="completedQuizzesContent">
+                        <div class="empty-state">
+                            <i class="fas fa-inbox"></i>
+                            <p>No quizzes completed yet. <a href="#quizzes" onclick="switchQuizTab('available')">Try one!</a></p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Profile Section -->
+            <section id="profile" class="content-section">
+                <div class="section-header">
+                    <h1>Your Profile</h1>
+                    <p>Manage your account information</p>
+                </div>
+
+                <div class="profile-container">
+                    <div class="profile-info">
+                        <div class="profile-header">
+                            <div class="avatar">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div class="profile-details">
+                                <h2 id="profileUsername">Loading...</h2>
+                                <p id="profileEmail">Loading...</p>
+                                <p id="profileJoinDate">Loading...</p>
+                            </div>
+                        </div>
+
+                        <div class="profile-section">
+                            <h3>Account Settings</h3>
+                            <div class="setting-item">
+                                <label>Username</label>
+                                <input type="text" id="settingUsername" disabled>
+                            </div>
+                            <div class="setting-item">
+                                <label>Email</label>
+                                <input type="email" id="settingEmail" disabled>
+                            </div>
+                            <div class="setting-item">
+                                <label>Email Notifications</label>
+                                <input type="checkbox" checked>
+                            </div>
+                            <div class="setting-item">
+                                <label>Privacy</label>
+                                <select>
+                                    <option>Public</option>
+                                    <option>Private</option>
+                                </select>
+                            </div>
+                            <button class="btn-primary" onclick="updateProfile()">Save Changes</button>
+                        </div>
+
+                        <div class="profile-section danger">
+                            <h3>Danger Zone</h3>
+                            <p>Once you delete your account, there is no going back. Please be certain.</p>
+                            <button class="btn-danger" onclick="deleteAccount()">Delete Account</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- About Section -->
+            <section id="about" class="content-section">
+                <div class="section-header">
+                    <h1>About Solar System Visualizer</h1>
+                    <p>Learn more about our platform</p>
+                </div>
+
+                <div class="about-container">
+                    <div class="about-content">
+                        <h2>Our Mission</h2>
+                        <p>
+                            Solar System Visualizer is dedicated to making astronomy accessible and engaging for everyone.
+                            Through interactive 3D visualization and real astronomical data, we inspire curiosity about our
+                            place in the universe.
+                        </p>
+
+                        <h3>Features</h3>
+                        <ul>
+                            <li><strong>Interactive 3D Models:</strong> Explore all 8 planets with accurate data</li>
+                            <li><strong>Real-time Simulation:</strong> Watch orbital mechanics in action</li>
+                            <li><strong>Educational Content:</strong> Learn fascinating facts about our solar system</li>
+                            <li><strong>Save & Share:</strong> Create and manage your simulations</li>
+                            <li><strong>Mobile Friendly:</strong> Explore on any device</li>
+                        </ul>
+
+                        <h3>Technology Stack</h3>
+                        <ul>
+                            <li>Backend: Python Flask</li>
+                            <li>Frontend: HTML5, CSS3, JavaScript</li>
+                            <li>3D Visualization: Three.js</li>
+                            <li>Database: SQLite</li>
+                            <li>Server: Flask Development Server / Production WSGI</li>
+                        </ul>
+
+                        <h3>Contact Us</h3>
+                        <p>Have questions or suggestions? Get in touch!</p>
+                        <ul>
+                            <li>Email: shravanipatil2526@ternaengg.ac.in</li>
+                            <li>Phone: +91 7387182302</li>
+                            <li>Website: www.solarsystemvisualizer.com</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+</body>
+</html>

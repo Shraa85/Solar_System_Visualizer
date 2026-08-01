@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ quiz.title }} - Quiz 🚀</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/quiz.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- ========== PRE-QUIZ SCREEN ========== -->
+    <div id="preQuizScreen" class="pre-quiz-screen">
+        <div class="pre-quiz-container">
+
+            <!-- Back Button -->
+            <a href="{{ url_for('dashboard') }}" class="back-link">
+                <i class="fas fa-arrow-left"></i> Back to Dashboard
+            </a>
+
+            <!-- Quiz Header -->
+            <div class="pre-quiz-header">
+                <div class="quiz-planet-emoji" id="quizEmoji">🌌</div>
+                <h1 class="pre-quiz-title">{{ quiz.title }}</h1>
+                <p class="pre-quiz-desc">{{ quiz.description }}</p>
+
+                <div class="quiz-meta-pills">
+                    <span class="meta-pill"><i class="fas fa-question-circle"></i> {{ quiz.total_questions }} Questions</span>
+                    <span class="meta-pill"><i class="fas fa-clock"></i> {{ quiz.duration_minutes }} Minutes</span>
+                    <span class="meta-pill difficulty-pill">
+                        <i class="fas fa-signal"></i> {{ quiz.difficulty }}
+                    </span>
+                </div>
+            </div>
+
+            <!-- YouTube Video Section -->
+            <div class="yt-section">
+                <div class="yt-section-header">
+                    <div class="yt-icon-wrap"><i class="fab fa-youtube"></i></div>
+                    <div>
+                        <h2 class="yt-title">Watch Before You Quiz! 🎬</h2>
+                        <p class="yt-subtitle">These videos will help you learn and score higher</p>
+                    </div>
+                </div>
+
+                <div id="ytLoading" class="yt-loading">
+                    <div class="yt-spinner"></div>
+                    <p>Finding the best videos for you... 🔍</p>
+                </div>
+
+                <div id="ytVideos" class="yt-videos-grid" style="display:none;"></div>
+            </div>
+
+            <!-- AI Quiz Generation Notice -->
+            <div class="ai-notice-card">
+                <div class="ai-notice-icon">🤖</div>
+                <div class="ai-notice-text">
+                    <strong>AI-Powered Questions!</strong>
+                    <p>Fresh questions are generated just for you every time using AI. Each quiz is unique! ✨</p>
+                </div>
+                <div id="aiStatusBadge" class="ai-status-badge ai-status-loading">
+                    <i class="fas fa-spinner fa-spin"></i> Preparing...
+                </div>
+            </div>
+
+            <!-- Start Button -->
+            <button id="startQuizBtn" class="start-quiz-btn" onclick="beginQuiz()" disabled>
+                <span class="start-btn-inner">
+                    <i class="fas fa-rocket"></i>
+                    <span>Start Quiz!</span>
+                </span>
+                <div class="start-btn-shine"></div>
+            </button>
+
+            <p class="start-hint" id="startHint">⏳ Preparing your quiz...</p>
+        </div>
+    </div>
+
+    <!-- ========== QUIZ SCREEN ========== -->
+    <div id="quizScreen" class="quiz-shell" data-quiz-id="{{ quiz_id }}" style="display:none;">
+        <header class="quiz-topbar">
+            <div>
+                <a href="{{ url_for('dashboard') }}" class="back-link"><i class="fas fa-arrow-left"></i> Back</a>
+                <h1 class="quiz-topbar-title">{{ quiz.title }}</h1>
+            </div>
+            <div class="timer-card" id="timerCard">
+                <span class="timer-emoji">⏰</span>
+                <span class="timer-label">Time Left</span>
+                <span id="timerDisplay" class="timer-value">30:00</span>
+            </div>
+        </header>
+
+        <div class="quiz-progress-bar-outer">
+            <div id="progressBar" class="quiz-progress-bar-inner"></div>
+            <span id="progressText" class="progress-text">1 / 15</span>
+        </div>
+
+        <main class="quiz-layout">
+            <!-- Sidebar Navigator -->
+            <aside class="quiz-sidebar">
+                <h3 class="sidebar-title"><i class="fas fa-map"></i> Questions</h3>
+                <div id="questionNav" class="question-nav-grid"></div>
+
+                <div class="legend-row">
+                    <span class="legend-dot dot-current"></span><span>Current</span>
+                    <span class="legend-dot dot-answered"></span><span>Done</span>
+                    <span class="legend-dot dot-unanswered"></span><span>Skipped</span>
+                </div>
+
+                <button class="submit-btn full-width" onclick="submitQuiz(false)">
+                    <i class="fas fa-paper-plane"></i> Submit Quiz
+                </button>
+            </aside>
+
+            <!-- Main Question Card -->
+            <section class="quiz-main-card">
+                <div id="questionArea" class="question-area"></div>
+
+                <div class="quiz-actions">
+                    <button id="prevBtn" class="nav-btn prev-btn" onclick="goToPreviousQuestion()">
+                        <i class="fas fa-arrow-left"></i> Previous
+                    </button>
+                    <div class="question-dots" id="questionDots"></div>
+                    <button id="nextBtn" class="nav-btn next-btn" onclick="goToNextQuestion()">
+                        Next <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Confetti overlay -->
+    <div id="confettiOverlay" class="confetti-overlay" style="display:none;"></div>
+
+    <script>
+        window.QUIZ_META = {
+            quizId: {{ quiz_id|tojson }},
+            title: {{ quiz.title|tojson }},
+            durationMinutes: {{ quiz.duration_minutes }},
+            difficulty: {{ quiz.difficulty|tojson }}
+        };
+    </script>
+    <script src="{{ url_for('static', filename='js/quiz.js') }}"></script>
+</body>
+</html>

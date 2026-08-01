@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ planet.name }} - Detailed Study</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/planet_detail.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body style="--planet-accent: {{ planet.accent_color }};">
+    <div class="planet-page">
+        <header class="planet-header">
+            <div class="header-left">
+                <a href="{{ url_for('visualizer') }}" class="nav-btn">
+                    <i class="fas fa-arrow-left"></i>
+                    Back to Visualizer
+                </a>
+                <a href="{{ url_for('home') }}" class="nav-btn secondary-btn">
+                    <i class="fas fa-home"></i>
+                    Home
+                </a>
+            </div>
+
+            <div class="header-right">
+                {% if previous_planet %}
+                <a href="{{ url_for('planet_detail', planet_key=previous_planet) }}" class="nav-btn secondary-btn">
+                    <i class="fas fa-chevron-left"></i>
+                    Previous Planet
+                </a>
+                {% endif %}
+
+                {% if next_planet %}
+                <a href="{{ url_for('planet_detail', planet_key=next_planet) }}" class="nav-btn secondary-btn">
+                    Next Planet
+                    <i class="fas fa-chevron-right"></i>
+                </a>
+                {% endif %}
+            </div>
+        </header>
+
+        <main class="planet-main">
+            <section class="hero-card">
+                <div class="hero-text">
+                    <div class="hero-badge">Detailed Planet Study</div>
+                    <h1>{{ planet.name }}</h1>
+                    <p class="tagline">{{ planet.tagline }}</p>
+
+                    <div class="quick-stats">
+                        {% for label, value in planet.quick_stats.items() %}
+                        <div class="quick-stat">
+                            <span class="stat-label">{{ label }}</span>
+                            <span class="stat-value">{{ value }}</span>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="hero-image-wrap">
+                    <img
+                        src="{{ url_for('static', filename=planet.image) }}"
+                        alt="{{ planet.name }}"
+                        class="planet-image"
+                    >
+                </div>
+            </section>
+
+            <section class="study-intro">
+                <div class="intro-card">
+                    <h2>About this page</h2>
+                    <p>
+                        This page is designed for students who want to go beyond the quick visualizer facts
+                        and explore a more structured study of {{ planet.name }}.
+                    </p>
+                </div>
+
+                <div class="intro-card highlight-card">
+                    <h2>How to use</h2>
+                    <p>
+                        Click any topic below to expand and read the details. Click again to close it.
+                    </p>
+                </div>
+            </section>
+
+            <section class="accordion-section">
+                {% for section in planet.sections %}
+                <div class="accordion-item">
+                    <button class="accordion-header" type="button">
+                        <span>{{ section.title }}</span>
+                        <i class="fas fa-plus accordion-icon"></i>
+                    </button>
+                    <div class="accordion-body">
+                        <div class="accordion-content">
+                            {% for paragraph in section.content %}
+                            <p>{{ paragraph }}</p>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </section>
+        </main>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/planet_detail.js') }}"></script>
+</body>
+</html>

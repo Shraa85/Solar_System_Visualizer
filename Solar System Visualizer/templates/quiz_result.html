@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ attempt.quiz_name }} - Result</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/quiz.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="quiz-shell result-shell">
+        <header class="quiz-topbar">
+            <div>
+                <a href="{{ url_for('dashboard') }}" class="back-link"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>
+                <h1>{{ attempt.quiz_name }} - Result</h1>
+                <p>Your quiz has been submitted successfully. Review every question below.</p>
+            </div>
+            <div class="timer-card result-summary-mini">
+                <span class="timer-label">Completed</span>
+                <span class="timer-value">{{ attempt.score|round|int }}%</span>
+            </div>
+        </header>
+
+        <section class="result-summary-grid">
+            <div class="summary-card big-score-card">
+                <span class="small-label">Final Score</span>
+                <div class="big-score">{{ attempt.score|round|int }}%</div>
+                <p>{{ attempt.correct_answers }} correct out of {{ attempt.total_questions }} questions</p>
+            </div>
+            <div class="summary-card">
+                <span class="small-label">Time Used</span>
+                <div class="summary-value">{{ (attempt.time_taken_seconds / 60)|round(1) }} mins</div>
+            </div>
+            <div class="summary-card">
+                <span class="small-label">Completed On</span>
+                <div class="summary-value">{{ attempt.completed_at.strftime('%d %b %Y') }}</div>
+            </div>
+        </section>
+
+        <section class="result-review-list">
+            {% for item in attempt.result_details %}
+            <article class="review-card {{ 'correct-card' if item.is_correct else 'incorrect-card' }}">
+                <div class="review-header">
+                    <div>
+                        <span class="small-label">Question {{ item.number }}</span>
+                        <h3>{{ item.question }}</h3>
+                    </div>
+                    <span class="result-pill {{ 'pill-correct' if item.is_correct else 'pill-incorrect' }}">
+                        {{ 'Correct' if item.is_correct else 'Incorrect' }}
+                    </span>
+                </div>
+
+                <div class="options-review">
+                    {% for option in item.options %}
+                    {% set option_index = loop.index0 %}
+                    <div class="option-review-item
+                        {% if option_index == item.correct_index %} correct-option {% endif %}
+                        {% if item.chosen_index is not none and option_index == item.chosen_index and option_index != item.correct_index %} chosen-wrong-option {% endif %}
+                        {% if item.chosen_index is not none and option_index == item.chosen_index and option_index == item.correct_index %} chosen-correct-option {% endif %}
+                    ">
+                        <span>{{ loop.index | string }}. {{ option }}</span>
+                        <div class="option-tags">
+                            {% if option_index == item.correct_index %}
+                            <span class="option-tag correct-tag">Correct Option</span>
+                            {% endif %}
+                            {% if item.chosen_index is not none and option_index == item.chosen_index %}
+                            <span class="option-tag chosen-tag">Your Choice</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </article>
+            {% endfor %}
+        </section>
+    </div>
+</body>
+</html>

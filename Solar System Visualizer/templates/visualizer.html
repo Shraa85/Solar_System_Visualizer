@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solar System Visualizer - 3D Exploration</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/visualizer.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-left">
+                <a href="/dashboard" class="back-link">
+                    <i class="fas fa-arrow-left"></i> Back to Dashboard
+                </a>
+            </div>
+
+            <div class="nav-center">
+                <h1>Solar System Visualizer</h1>
+                <p class="nav-subtitle">Interactive 3D simulation for students and explorers</p>
+            </div>
+
+            <div class="nav-right">
+                <button class="icon-btn" onclick="showHelp()" title="Help">
+                    <i class="fas fa-question-circle"></i>
+                </button>
+                <button class="icon-btn" onclick="toggleSettings()" title="Settings">
+                    <i class="fas fa-cog"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div id="visualizationContainer" class="visualization-container"></div>
+
+    <div class="top-overlay">
+        <div id="simulationHud" class="simulation-hud">
+            <span id="hudSpeed">Speed: 1.0x</span>
+            <span class="hud-divider">|</span>
+            <span id="hudMode">Mode: Solar View</span>
+            <span class="hud-divider">|</span>
+            <span id="hudScale">Educational Simulation</span>
+        </div>
+
+        <div class="scale-note">
+            <i class="fas fa-info-circle"></i>
+            Distances, sizes and speeds are adjusted for learning and visualization.
+        </div>
+    </div>
+
+    <button class="reopen-btn reopen-left" onclick="togglePanel('left')" style="display: none;">
+        <i class="fas fa-angle-right"></i>
+    </button>
+
+    <div class="control-panel left-panel">
+        <div class="panel-header">
+            <h2>Explorer Controls</h2>
+            <button class="collapse-btn" onclick="togglePanel('left')">
+                <i class="fas fa-angle-left"></i>
+            </button>
+        </div>
+
+        <div class="panel-content">
+            <div class="control-section">
+                <h3>Display</h3>
+                <div class="checkbox-group">
+                    <label class="checkbox">
+                        <input type="checkbox" id="orbitsToggle" checked onchange="toggleOrbits()">
+                        <span>Show Orbits</span>
+                    </label>
+
+                    <label class="checkbox">
+                        <input type="checkbox" id="labelsToggle" checked onchange="toggleLabels()">
+                        <span>Show Labels</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="control-section">
+                <h3>Simulation Speed</h3>
+                <div class="speed-control">
+                    <input
+                        type="range"
+                        id="speedSlider"
+                        min="0"
+                        max="25"
+                        step="0.1"
+                        value="1"
+                        oninput="setAnimationSpeed(this.value)"
+                        class="speed-slider"
+                    >
+                    <span id="speedValue" class="speed-display">1.0x</span>
+                </div>
+                <p class="helper-text">0 = Pause | 25 = Fast animation</p>
+            </div>
+
+            <div class="control-section">
+                <h3>Click a Planet</h3>
+                <ul class="planet-list" id="planetListLeft">
+                    <li class="planet-item" onclick="selectPlanet('mercury')">
+                        <span class="planet-dot" style="background-color: #8c7853;"></span>
+                        Mercury
+                    </li>
+                    <li class="planet-item" onclick="selectPlanet('venus')">
+                        <span class="planet-dot" style="background-color: #ffc649;"></span>
+                        Venus
+                    </li>
+                    <li class="planet-item" onclick="selectPlanet('earth')">
+                        <span class="planet-dot" style="background-color: #4a90e2;"></span>
+                        Earth
+                    </li>
+                    <li class="planet-item" onclick="selectPlanet('mars')">
+                        <span class="planet-dot" style="background-color: #e27b58;"></span>
+                        Mars
+                    </li>
+                    <li class="planet-item" onclick="selectPlanet('jupiter')">
+                        <span class="planet-dot" style="background-color: #c88b3a;"></span>
+                        Jupiter
+                    </li>
+                    <li class="planet-item" onclick="selectPlanet('saturn')">
+                        <span class="planet-dot" style="background-color: #fad5a5;"></span>
+                        Saturn
+                    </li>
+                    <li class="planet-item" onclick="selectPlanet('uranus')">
+                        <span class="planet-dot" style="background-color: #4fd0e7;"></span>
+                        Uranus
+                    </li>
+                    <li class="planet-item" onclick="selectPlanet('neptune')">
+                        <span class="planet-dot" style="background-color: #4166f5;"></span>
+                        Neptune
+                    </li>
+                </ul>
+            </div>
+
+            <div class="control-section mini-actions">
+                <button class="action-btn" onclick="resetSolarView()">
+                    <i class="fas fa-globe"></i> Reset View
+                </button>
+                <button class="action-btn" onclick="focusSun()">
+                    <i class="fas fa-sun"></i> Focus Sun
+                </button>
+            </div>
+
+            <p class="tip-text">
+                💡 Tip: Drag to rotate, scroll to zoom, right-click + drag to pan.
+            </p>
+        </div>
+    </div>
+
+    <button class="reopen-btn reopen-right" onclick="togglePanel('right')" style="display: none;">
+        <i class="fas fa-angle-left"></i>
+    </button>
+
+    <div class="info-panel right-panel">
+        <div class="panel-header">
+            <h2>Planet Information</h2>
+            <button class="collapse-btn" onclick="togglePanel('right')">
+                <i class="fas fa-angle-right"></i>
+            </button>
+        </div>
+
+        <div class="panel-content">
+            <div id="objectInfo" class="selected-object info-placeholder">
+                <i class="fas fa-rocket"></i>
+                <p>Click on a planet to explore details, facts, and its place in the solar system.</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="helpModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeHelp()">&times;</span>
+            <h2>How to Use the Visualizer</h2>
+
+            <div class="help-content">
+                <h3>Navigation</h3>
+                <ul>
+                    <li><strong>Rotate:</strong> Left-click and drag</li>
+                    <li><strong>Zoom:</strong> Mouse scroll wheel</li>
+                    <li><strong>Pan:</strong> Right-click and drag</li>
+                </ul>
+
+                <h3>Exploration</h3>
+                <ul>
+                    <li>Click on any planet to focus it and view facts</li>
+                    <li>Use the speed slider to slow down or speed up the simulation</li>
+                    <li>Toggle orbit lines and labels anytime</li>
+                </ul>
+
+                <h3>Student Note</h3>
+                <ul>
+                    <li>This is an educational simulation</li>
+                    <li>Planet sizes and distances are adjusted for better learning visibility</li>
+                    <li>Planets rotate and revolve around the Sun</li>
+                </ul>
+            </div>
+
+            <button class="btn-primary" onclick="closeHelp()">Got it!</button>
+        </div>
+    </div>
+
+    <div id="settingsModal" class="modal">
+        <div class="modal-content settings-content">
+            <span class="close" onclick="closeSettings()">&times;</span>
+            <h2>Settings</h2>
+
+            <div class="settings-form">
+                <div class="setting-item">
+                    <label>Graphics Quality</label>
+                    <select id="graphicsQuality" onchange="updateGraphicsQuality(this.value)">
+                        <option value="low">Low</option>
+                        <option value="medium" selected>Medium</option>
+                        <option value="high">High</option>
+                    </select>
+                </div>
+
+                <div class="setting-item">
+                    <label>Background Stars</label>
+                    <input type="checkbox" id="backgroundStarsToggle" checked onchange="toggleBackgroundStars()">
+                </div>
+
+                <div class="setting-item">
+                    <label>Planet Trails</label>
+                    <input type="checkbox" id="planetTrailsToggle" onchange="togglePlanetTrails()">
+                </div>
+
+                <div class="setting-item">
+                    <label>Auto-Rotate Camera</label>
+                    <input type="checkbox" id="autoRotateToggle" onchange="toggleAutoRotate()">
+                </div>
+            </div>
+
+            <button class="btn-primary" onclick="closeSettings()">Close</button>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/visualizer.js') }}"></script>
+</body>
+</html>
